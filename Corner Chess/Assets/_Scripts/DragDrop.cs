@@ -5,7 +5,7 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
 {
     private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
-
+    private Chessman chessman;
     private Vector3 startPosition;
 
     public bool isDropped { get; set; }
@@ -14,6 +14,7 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
+        chessman = GetComponent<Chessman>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -21,7 +22,7 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         isDropped = false;
         startPosition = transform.position;
 
-        GetComponent<Chessman>().ChangeCellColor(true);
+        chessman.ChangeCellColor(true);
 
         canvasGroup.alpha = 0.75f;
         canvasGroup.blocksRaycasts = false;
@@ -35,7 +36,7 @@ public class DragDrop : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDrag
         if (!isDropped)
             transform.position = startPosition;
 
-        GetComponent<Chessman>().ChangeCellColor(false);
+        chessman.ChangeCellColor(false);
     }
 
     public void OnDrag(PointerEventData eventData)

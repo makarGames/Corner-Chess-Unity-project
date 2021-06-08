@@ -4,10 +4,15 @@ using UnityEngine.UI;
 
 public class Cell : MonoBehaviour
 {
-    private Chessman chessman;
     private List<Cell> neighbors = new List<Cell>();
     private Color startColor;
 
+    public int neighborsNumber
+    {
+        get => neighbors.Count;
+    }
+
+    public Chessman chessman;
     public bool isEmpty { get; set; }
 
     private void Start()
@@ -23,7 +28,12 @@ public class Cell : MonoBehaviour
             cell.AddNeighbor(this);
         }
     }
-
+    //------------------------------------
+    public Cell GetNeighbor(int index)
+    {
+        return neighbors[index];
+    }
+    //-----------------------------------
     public bool NeighborContains(Cell cell)
     {
         return neighbors.Contains(cell);
@@ -41,7 +51,7 @@ public class Cell : MonoBehaviour
     {
         if (isEmpty)
             if (drag)
-                GetComponent<Image>().color = Color.black;
+                GetComponent<Image>().color -= ColorStorage.freeForStepOffeset;
             else
                 GetComponent<Image>().color = startColor;
     }
