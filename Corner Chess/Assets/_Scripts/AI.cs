@@ -15,10 +15,15 @@ public class AI : MonoBehaviour
             S = this;
     }
 
+    private void Start()
+    {
+        targetCells = new List<Cell>(EndGame.S.GetWhiteWinCells());
+    }
+
     public void Step()
     {
-        print("lol");
         List<Chessman> tempChessmansStack = new List<Chessman>(chessmans);
+
         while (tempChessmansStack.Count > 0)
         {
             int chessmanIndex = Random.Range(0, tempChessmansStack.Count);
@@ -32,6 +37,13 @@ public class AI : MonoBehaviour
                 movingChessmans.transform.position = cellForStep.transform.position;
                 movingChessmans.ChangeCell(cellForStep);
                 EndGame.S.CheckingEndGame();
+
+                /* if (targetCells[targetCells.Count - 1] == cellForStep)
+                {
+                    print("LOL");
+                    targetCells.Remove(cellForStep);
+                    chessmans.Remove(movingChessmans);
+                } */
                 break;
             }
             tempChessmansStack.Remove(movingChessmans);

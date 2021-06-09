@@ -14,6 +14,11 @@ public class EndGame : MonoBehaviour
             S = this;
     }
 
+    public List<Cell> GetWhiteWinCells()
+    {
+        return whiteWinCells;
+    }
+
     public void AddWinCells(bool forWhite, Cell cell)
     {
         if (forWhite)

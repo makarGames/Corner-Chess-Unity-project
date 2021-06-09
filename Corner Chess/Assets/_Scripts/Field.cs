@@ -24,7 +24,8 @@ public class Field : MonoBehaviour
     private void Awake()
     {
         FieldInit();
-        gameMode = GameModeFromString(PlayerPrefs.GetString("gameModeName", "kingLike"));
+        gameMode = GameMode.straightJumps;
+        /* GameModeFromString(PlayerPrefs.GetString("gameModeName", "straightJumps")); */
     }
 
     private GameMode GameModeFromString(string gameModeName)
@@ -76,7 +77,7 @@ public class Field : MonoBehaviour
                     chessman.ChangeCell(tempCell);
                 }
 
-                GeneratePossibleMoves(gameMode, j, i, tempCell, row, chessboard);
+                GeneratePossibleMoves(GameMode.straightJumps, j, i, tempCell, row, chessboard);
             }
             chessboard.Add(row);
         }

@@ -32,7 +32,10 @@ public class OrderOfSteps : MonoBehaviour
     {
         if (S == null)
             S = this;
+    }
 
+    private void Start()
+    {
         whiteMoves = true;
     }
 }
