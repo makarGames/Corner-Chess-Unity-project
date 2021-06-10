@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class Chessman : MonoBehaviour
 {
@@ -14,13 +15,11 @@ public class Chessman : MonoBehaviour
             _white = value;
             if (value)
             {
-                AI.S.chessmans.Add(this);
                 GetComponent<Image>().color = ColorStorage.whiteChessman;
                 GetComponent<RectTransform>().rotation = Quaternion.Euler(0f, 0f, -180f);
             }
             else
             {
-
                 GetComponent<Image>().color = ColorStorage.blackChessman;
             }
         }
@@ -30,19 +29,10 @@ public class Chessman : MonoBehaviour
     {
         cell.NeighborsChangeColor(activation);
     }
-    //------------------
-    public Cell GetFreeCellsForStep()
-    {
-        for (int i = cell.neighborsNumber - 1; i >= 0; i--)
-            if (cell.GetNeighbor(i).isEmpty)
-                return cell.GetNeighbor(i);
 
-        return null;
-    }
-    //------------------------------------
-    public bool CheckingOnNeighbor(Cell c)
+    public List<Cell> GetNeighborCells()
     {
-        return cell.NeighborContains(c);
+        return cell.GetNeighbors();
     }
 
     public void ChangeCell(Cell c)
@@ -60,5 +50,12 @@ public class Chessman : MonoBehaviour
         cell.isEmpty = false;
         cell.chessman = this;
         transform.position = cell.transform.position;
+    }
+
+    public void MoveTo(Cell newCell)
+    {
+        this.ChangeCell(newCell);
+        EndGame.S.CheckingEndGame();
+        OrderOfSteps.S.whiteMoves = !OrderOfSteps.S.whiteMoves;
     }
 }

@@ -11,13 +11,14 @@ public class ChessmanSlot : MonoBehaviour, IDropHandler
         if (pointerDrag.white != OrderOfSteps.S.whiteMoves)
             return;
 
-        if (pointerDrag != null && pointerDrag.CheckingOnNeighbor(cell) && cell.isEmpty)
+        ChackingForStep(pointerDrag, cell);
+    }
+
+    private void ChackingForStep(Chessman chessman, Cell cell)
+    {
+        if (chessman != null && cell.isEmpty && chessman.GetNeighborCells().Contains(cell))
         {
-
-
-            pointerDrag.ChangeCell(cell);
-            EndGame.S.CheckingEndGame();
-            OrderOfSteps.S.whiteMoves = !OrderOfSteps.S.whiteMoves;
+            chessman.MoveTo(cell);
         }
     }
 }

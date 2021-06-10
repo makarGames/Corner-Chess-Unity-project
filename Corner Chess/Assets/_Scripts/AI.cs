@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class AI : MonoBehaviour
 {
-    public List<Chessman> chessmans = new List<Chessman>();
-    public List<Cell> targetCells = new List<Cell>();
+    private List<Chessman> chessmans = new List<Chessman>();
+    private List<Cell> targetCells = new List<Cell>();
+
+    private bool whiteChoosed;
 
     public static AI S;
 
@@ -13,11 +15,24 @@ public class AI : MonoBehaviour
     {
         if (S == null)
             S = this;
+
+        whiteChoosed = PlayerPrefs.GetInt("white", 1) == 1;
     }
 
     private void Start()
     {
-        targetCells = new List<Cell>(EndGame.S.GetWhiteWinCells());
+        targetCells = new List<Cell>(EndGame.S.GetWinCells(!whiteChoosed));
+        if (!whiteChoosed)
+        {
+            targetCells.Reverse();
+            chessmans.Reverse();
+        }
+    }
+
+    public void AddAIChessmans(Chessman c)
+    {
+        if (c.white == !whiteChoosed)
+            chessmans.Add(c);
     }
 
     public void Step()
@@ -28,30 +43,58 @@ public class AI : MonoBehaviour
         {
             int chessmanIndex = Random.Range(0, tempChessmansStack.Count);
 
-            Chessman movingChessmans = tempChessmansStack[chessmanIndex];
-            Cell cellForStep = movingChessmans.GetFreeCellsForStep();
+            Chessman movingChessman = tempChessmansStack[chessmanIndex];
 
+            Cell cellForStep = GetBestStep(movingChessman.GetNeighborCells());
             if (cellForStep != null)
             {
-                OrderOfSteps.S.whiteMoves = !OrderOfSteps.S.whiteMoves;
-                movingChessmans.transform.position = cellForStep.transform.position;
-                movingChessmans.ChangeCell(cellForStep);
+                movingChessman.transform.position = cellForStep.transform.position;
+                movingChessman.ChangeCell(cellForStep);
                 EndGame.S.CheckingEndGame();
+                print(cellForStep);
 
-                /* if (targetCells[targetCells.Count - 1] == cellForStep)
+                if (targetCells[0].chessman != null && targetCells[0].chessman.white != whiteChoosed)
                 {
-                    print("LOL");
-                    targetCells.Remove(cellForStep);
-                    chessmans.Remove(movingChessmans);
-                } */
+                    print("lol");
+
+                    targetCells.RemoveAt(0);
+                    chessmans.Remove(movingChessman);
+                }
                 break;
             }
-            tempChessmansStack.Remove(movingChessmans);
+
+            tempChessmansStack.Remove(movingChessman);
             if (tempChessmansStack.Count == 0)
             {
                 Debug.Log("No free steps for AI!");
-                OrderOfSteps.S.whiteMoves = !OrderOfSteps.S.whiteMoves;
             }
         }
+        OrderOfSteps.S.whiteMoves = !OrderOfSteps.S.whiteMoves;
+        print("Шаг");
+    }
+
+    private Cell GetBestStep(List<Cell> cellsForStep)
+    {
+        List<Cell> cells = new List<Cell>(cellsForStep);
+        if (!whiteChoosed)
+            cells.Reverse();
+
+        int number = cells.Count;
+        Cell bestCellStep = null;
+
+        for (int i = 0; i < number; i++)
+        {
+            if (cells[i] != null && cells[i].isEmpty)
+            {
+                if (i == 0 || i == number - 1)
+                    bestCellStep = cells[i];
+                else if (cells[i + 1] != null && cells[i + 1].isEmpty)
+                    bestCellStep = cells[Random.Range(i, i + 2)];
+                else
+                    bestCellStep = cells[i];
+                break;
+            }
+        }
+        return bestCellStep;
     }
 }
