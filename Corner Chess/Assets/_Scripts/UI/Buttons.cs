@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 
+//Скрипт который отвечает за переход между сценами и затемнение экрана
 public class Buttons : MonoBehaviour
 {
     [SerializeField] private Image fade;

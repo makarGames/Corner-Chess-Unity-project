@@ -6,7 +6,7 @@ public class Field : MonoBehaviour
 {
     private int size;
 
-    [SerializeField] private Canvas canvas;
+    [SerializeField] private GameObject table;
     [SerializeField] private Cell cellPrefab;
     [SerializeField] private Chessman chessmanPrefab;
 
@@ -48,12 +48,11 @@ public class Field : MonoBehaviour
                     bool white = i < (size - 1) / 2;
                     Chessman chessman = Instantiate(chessmanPrefab);
 
-                    chessman.transform.SetParent(canvas.transform, false);
+                    chessman.transform.SetParent(table.transform, false);
                     chessman.white = white;
                     chessman.ChangeCell(tempCell);
 
                     EndGame.S.AddWinCells(!white, tempCell);
-                    EndGame.S.AddChessmans(white, chessman);
                     AI.S.AddAIChessmans(chessman);
                 }
 

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7605900559276642544}
   - component: {fileID: 1418876659}
   - component: {fileID: 6034317203226962515}
+  - component: {fileID: -2625972291278123640}
   m_Layer: 5
   m_Name: "\u0421hessman"
   m_TagString: Untagged
@@ -114,3 +115,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3db68ed307eca384bb82d32f0521975f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!111 &-2625972291278123640
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1069551968524366141}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations:
+  - {fileID: 7400000, guid: 7e283e221630c134684a0b12445cc860, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0

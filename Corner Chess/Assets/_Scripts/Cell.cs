@@ -1,26 +1,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using System.Collections;
 public class Cell : MonoBehaviour
 {
     private Cell northWest, north, west, northEast, southWest, east, south, southEast;
     private List<Cell> neighbors;
 
+    private Image _image;
     private Color startColor;
 
-    public int neighborsNumber
-    {
-        get => neighbors.Count;
-    }
-
-    public Chessman chessman;
+    private Chessman chessman;
     public bool isEmpty { get; set; }
 
     private void Start()
     {
-        startColor = GetComponent<Image>().color;
+        _image = GetComponent<Image>();
+        startColor = _image.color;
         neighbors = new List<Cell>() { northWest, north, west, northEast, southWest, east, south, southEast };
+    }
+
+    public bool ChackingChessmanColor(bool white)
+    {
+        return chessman != null && chessman.white == white;
+    }
+
+    public void SetChessman(Chessman c)
+    {
+        isEmpty = c == null;
+        chessman = c;
     }
 
     public List<Cell> GetNeighbors()
@@ -41,9 +49,21 @@ public class Cell : MonoBehaviour
     {
         if (isEmpty)
             if (drag)
-                GetComponent<Image>().color -= ColorStorage.freeForStepOffeset;
+                StartCoroutine(SmoothColorChange(_image.color - ColorStorage.freeForStepOffeset));
             else
-                GetComponent<Image>().color = startColor;
+                StartCoroutine(SmoothColorChange(startColor));
+    }
+
+    private IEnumerator SmoothColorChange(Color endColor)
+    {
+        float colorizeRatio = 0f;
+        Color startColor = _image.color;
+        while (colorizeRatio <= 1)
+        {
+            _image.color = Color.Lerp(startColor, endColor, colorizeRatio);
+            colorizeRatio += 0.15f;
+            yield return new WaitForFixedUpdate();
+        }
     }
 
 

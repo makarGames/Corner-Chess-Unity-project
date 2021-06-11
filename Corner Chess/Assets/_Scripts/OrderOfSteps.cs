@@ -20,9 +20,14 @@ public class OrderOfSteps : MonoBehaviour
         set
         {
             _whiteMoves = value;
+
+            OrderOfStepsText.text = value ? ("БЕЛЫЕ (" + playerOneName + ")") : ("ЧЁРНЫЕ (" + playerTwoName + ")");
+            OrderOfStepsText.color = value ? ColorStorage.whiteChessman : ColorStorage.blackChessman;
+
+            /*  Этот блок кода делает то же самое, что и 2 строчки выше,
+                но я не уверен какой код будет читабильнее. Тот что вверху выглядит компактно и локанично, но тот что ниже кажется понятнее
             if (value)
             {
-
                 OrderOfStepsText.text = "БЕЛЫЕ (" + playerOneName + ")";
                 OrderOfStepsText.color = ColorStorage.whiteChessman;
             }
@@ -30,9 +35,10 @@ public class OrderOfSteps : MonoBehaviour
             {
                 OrderOfStepsText.text = "ЧЁРНЫЕ (" + playerTwoName + ")";
                 OrderOfStepsText.color = ColorStorage.blackChessman;
-            }
+            } */
 
-            if (soloGame && value == !whiteChoosed) AI.S.Step();
+            if (soloGame && value == !whiteChoosed)
+                AI.S.Step();
         }
     }
 

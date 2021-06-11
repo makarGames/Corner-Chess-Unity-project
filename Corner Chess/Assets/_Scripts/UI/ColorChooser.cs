@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+//Скрипт, который позволяет менять сторону при одиночной игре против компьютера
 public class ColorChooser : MonoBehaviour
 {
     [SerializeField] private Text colorChooserText;

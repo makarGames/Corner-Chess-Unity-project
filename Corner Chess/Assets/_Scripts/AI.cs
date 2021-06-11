@@ -1,13 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AI : MonoBehaviour
 {
-    private List<Chessman> chessmans = new List<Chessman>();
+    private List<Chessman> chessmans = new List<Chessman>();    //фишки, которыми будит играть компьютер
     private List<Cell> targetCells = new List<Cell>();
 
-    private bool whiteChoosed;
+    private bool whiteChoosed;  //цвет который выбрал для игры человек
 
     public static AI S;
 
@@ -49,14 +48,10 @@ public class AI : MonoBehaviour
             if (cellForStep != null)
             {
                 movingChessman.transform.position = cellForStep.transform.position;
-                movingChessman.ChangeCell(cellForStep);
-                EndGame.S.CheckingEndGame();
-                print(cellForStep);
+                movingChessman.MoveTo(cellForStep);
 
-                if (targetCells[0].chessman != null && targetCells[0].chessman.white != whiteChoosed)
+                if (targetCells[0].ChackingChessmanColor(!whiteChoosed))
                 {
-                    print("lol");
-
                     targetCells.RemoveAt(0);
                     chessmans.Remove(movingChessman);
                 }
@@ -64,13 +59,13 @@ public class AI : MonoBehaviour
             }
 
             tempChessmansStack.Remove(movingChessman);
+
             if (tempChessmansStack.Count == 0)
             {
                 Debug.Log("No free steps for AI!");
+                OrderOfSteps.S.whiteMoves = !OrderOfSteps.S.whiteMoves;
             }
         }
-        OrderOfSteps.S.whiteMoves = !OrderOfSteps.S.whiteMoves;
-        print("Шаг");
     }
 
     private Cell GetBestStep(List<Cell> cellsForStep)

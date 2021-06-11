@@ -16,9 +16,6 @@ public class EndGame : MonoBehaviour
     private List<Cell> whiteWinCells = new List<Cell>();
     private List<Cell> blackWinCells = new List<Cell>();
 
-    private List<Chessman> whiteChessmans = new List<Chessman>();
-    private List<Chessman> blackChessmans = new List<Chessman>();
-
     public static EndGame S;
     private void Awake()
     {
@@ -36,14 +33,6 @@ public class EndGame : MonoBehaviour
 
     public List<Cell> GetWinCells(bool white) => white ? whiteWinCells : blackWinCells;
 
-    public void AddChessmans(bool forWhite, Chessman chessman)
-    {
-        if (forWhite)
-            whiteChessmans.Add(chessman);
-        else
-            blackChessmans.Add(chessman);
-    }
-
     public void AddWinCells(bool forWhite, Cell cell)
     {
         if (forWhite)
@@ -54,18 +43,18 @@ public class EndGame : MonoBehaviour
 
     public void CheckingEndGame()
     {
-        if (CheckFullnessCells(whiteWinCells, whiteChessmans))
+        if (CheckFullnessCells(whiteWinCells, true))
             WhiteWins(true);
-        else if (CheckFullnessCells(blackWinCells, blackChessmans))
+        else if (CheckFullnessCells(blackWinCells, false))
             WhiteWins(false);
     }
 
-    private bool CheckFullnessCells(List<Cell> cells, List<Chessman> chessmans)
+    private bool CheckFullnessCells(List<Cell> cells, bool white)
     {
         bool fullness = true;
         foreach (Cell cell in cells)
         {
-            if (!chessmans.Contains(cell.chessman))
+            if (!cell.ChackingChessmanColor(white))
             {
                 fullness = false;
                 break;

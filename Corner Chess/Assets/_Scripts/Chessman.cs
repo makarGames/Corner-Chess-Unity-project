@@ -1,9 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Collections;
 
 public class Chessman : MonoBehaviour
 {
+    private Animation _animation;
     private Cell cell;
 
     private bool _white;
@@ -25,6 +27,11 @@ public class Chessman : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        _animation = GetComponent<Animation>();
+    }
+
     public void ChangeCellColor(bool activation)
     {
         cell.NeighborsChangeColor(activation);
@@ -41,15 +48,26 @@ public class Chessman : MonoBehaviour
 
         if (cell != null)
         {
-            cell.isEmpty = true;
-            cell.chessman = null;
+            cell.SetChessman(null);
             ChangeCellColor(false);
         }
 
         cell = c;
-        cell.isEmpty = false;
-        cell.chessman = this;
-        transform.position = cell.transform.position;
+        cell.SetChessman(this);
+        StartCoroutine(MovingChess(cell.transform.position));
+    }
+
+    private IEnumerator MovingChess(Vector3 endPosiotion)
+    {
+        float moveRatio = 0f;
+        Vector3 startPosition = transform.position;
+        while (moveRatio <= 1)
+        {
+            transform.position = Vector3.Lerp(startPosition, endPosiotion, moveRatio);
+            moveRatio += 1f / 6f;
+            yield return new WaitForFixedUpdate();
+        }
+        _animation.Play("Placed");
     }
 
     public void MoveTo(Cell newCell)
