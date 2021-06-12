@@ -15,6 +15,7 @@ public class Field : MonoBehaviour
     private void Awake()
     {
         size = PlayerPrefs.GetInt("fieldSize", 8);
+        table.transform.localScale *= 8f / size;
         FieldInit();
     }
 
